@@ -17,9 +17,16 @@ class CollectsController extends AppController
      */
     public function index()
     {
-        $collects = $this->paginate($this->Collects);
+        $this->paginate = ['contain' => ['Users', 'Gyms', 'Parts', 'Purposes', 'Prefectures']];
 
-        $this->set(compact('collects'));
+        $filter = $this->Collects->newEmptyEntity();
+        $gyms = $this->Collects->Gyms->find('list');
+        $parts = $this->Collects->Parts->find('list');
+        $purposes = $this->Collects->Purposes->find('list');
+        $prefectures = $this->Collects->Prefectures->find('list');
+        $collects = $this->paginate($this->Collects);
+        
+        $this->set(compact('collects','filter','gyms','parts','purposes','prefectures'));
     }
 
     /**
@@ -100,5 +107,9 @@ class CollectsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function filter($request) {
+        
     }
 }

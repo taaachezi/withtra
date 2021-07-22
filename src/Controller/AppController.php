@@ -37,6 +37,19 @@ class AppController extends Controller
      *
      * @return void
      */
+    // ログイン判定
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        $result = $this->Authentication->getResult();
+        if($result->isValid()){
+            $is_login = true;
+            $current_user = $result->getData();
+        }else{
+            $is_login = false;
+            $current_user = "";
+        }
+        $this->set(compact('is_login','current_user'));
+    }
     public function initialize(): void
     {
         parent::initialize();

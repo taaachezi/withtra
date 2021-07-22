@@ -40,13 +40,19 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <nav class="top-nav position-fixed bg-white" style="z-index: 1; width: 100%;" id="header">
         <div class="top-nav-title">
             <a href="<?= $this->Url->build('/') ?>"><span>With</span>Tra</a>
+            <span>　ユーザ名：<?= $is_login ? $current_user->name : "ゲスト" ?></span>
         </div>
-        <div>
-            
+
+        <div class="top-nav-links">
+            <?php if ($is_login): ?>
+                <?= $this->Html->link(__('募集する'), ['controller'=> 'Collects', 'action' => 'add'], ['class' => 'text-white button float-right']) ?>
+                <a href="<?= $this->Url->build('/users/logout') ?>"><span>ログアウト</span></a>
+            <?php else: ?>
+                <a href="<?= $this->Url->build('/users/login') ?>"><span>ログイン</span></a>    
+            <?php endif; ?>
         </div>
     </nav>
-    <main class="main" id="content">
-        <div class="container">
+        <div class="container" id="content">
             <?= $this->Flash->render() ?>
             <?= $this->fetch('content') ?>
         </div>

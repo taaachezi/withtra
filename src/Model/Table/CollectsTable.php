@@ -98,6 +98,7 @@ class CollectsTable extends Table
         $validator
             ->integer('limit')
             ->requirePresence('limit', 'create')
+            ->greaterThan(2)
             ->notEmptyString('limit');
 
         $validator

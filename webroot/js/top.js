@@ -1,10 +1,9 @@
 window.addEventListener('DOMContentLoaded', ()=> {
 
-// ヘッダー固定
+// contentをヘッダー要素分下げる
 var height = document.getElementById('header').clientHeight;
 var content = document.getElementById('content');
-content.style.paddingTop = height + 'px';
-
-
+height += 30;
+content.style.paddingTop = height  + 'px';
 
 });
