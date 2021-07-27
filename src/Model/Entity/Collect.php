@@ -57,5 +57,6 @@ class Collect extends Entity
         'purpose' => true,
         'prefecture' => true,
         'entries' => true,
+        'title' => true,
     ];
 }

@@ -35,6 +35,10 @@ class CreateCollects extends AbstractMigration
             'limit' => 10,
             'null' => false,
         ]);
+        $table->addColumn('title', 'string',[
+            'limit' => 20,
+            'null'=>false,
+        ]);
         $table->addColumn('city','string',[
             'limit' => 32,
             'null' => false,

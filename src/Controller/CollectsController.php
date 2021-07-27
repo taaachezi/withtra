@@ -18,15 +18,46 @@ class CollectsController extends AppController
     public function index()
     {
         $this->paginate = ['contain' => ['Users', 'Gyms', 'Parts', 'Purposes', 'Prefectures']];
+        if ($this->request->getQuery('filter')) {
+            // where文のデータを取得（空も含む）
+            $getQuery = [];
+            $getQuery["Collects.time"] = $this->request->getQuery("date");
+            $getQuery["Gyms.id"] = $this->request->getQuery("gym_id");
+            $getQuery["Purposes.id"] = $this->request->getQuery("purpose_id");
+            $getQuery["Prefectures.id"]= $this->request->getQuery("prefecture_id");
+            $getQuery["Parts.id"] = $this->request->getQuery("part_id");
+            $city = $this->request->getQuery("city");
 
-        $filter = $this->Collects->newEmptyEntity();
-        $gyms = $this->Collects->Gyms->find('list');
-        $parts = $this->Collects->Parts->find('list');
-        $purposes = $this->Collects->Purposes->find('list');
+            // 検索されたデータのみ形成しwhere実行
+            $filter=[];
+            foreach($getQuery as $key => $val){
+                if(!empty($val)){
+                    $filter[$key] = $val;
+                }
+            }
+            $query = $this->Collects->find();
+            $query->where([$filter]);
+
+            // cityが記入されていれば検索
+            if(!empty($city)) {
+                $query->where(["Collects.city LIKE"=>'%'.$city.'%']);
+            }
+
+            // クエリ実行
+            $collects = $this->paginate($query);
+        }else{
+            $collects = $this->paginate($this->Collects->find('all'));
+        }
+
+        // 検索用データ格納
+        $gyms = $this->Collects->Gyms->find("list");
+        $parts = $this->Collects->Parts->find("list");
+        $purposes = $this->Collects->Purposes->find('list',[
+            'valueField' => 'content']
+        );
         $prefectures = $this->Collects->Prefectures->find('list');
-        $collects = $this->paginate($this->Collects);
         
-        $this->set(compact('collects','filter','gyms','parts','purposes','prefectures'));
+        $this->set(compact('collects','gyms','parts','purposes','prefectures'));
     }
 
     /**
@@ -107,9 +138,5 @@ class CollectsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
-    }
-
-    public function filter($request) {
-        
     }
 }

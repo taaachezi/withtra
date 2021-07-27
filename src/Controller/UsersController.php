@@ -49,14 +49,7 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      */
     public function home(){
-        // ヘッダーの切り分け
-        $result = $this->Authentication->getResult();
-        if($result->isValid()){
-            $current_user = true;
-        }else{
-            $current_user = false;
-        }
-        $this->set(compact('current_user'));
+        
     }
 
     public function index()

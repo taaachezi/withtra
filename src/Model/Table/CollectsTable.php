@@ -74,6 +74,7 @@ class CollectsTable extends Table
         ]);
         $this->hasMany('Entries', [
             'foreignKey' => 'collect_id',
+            'dependent' => true,
         ]);
     }
 
@@ -96,9 +97,15 @@ class CollectsTable extends Table
             ->notEmptyString('city');
 
         $validator
+            ->scalar('title')
+            ->maxLength('title', 32)
+            ->requirePresence('title', 'create')
+            ->notEmptyString('title');
+
+        $validator
             ->integer('limit')
             ->requirePresence('limit', 'create')
-            ->greaterThan(2)
+            // ->greaterThan(2)
             ->notEmptyString('limit');
 
         $validator

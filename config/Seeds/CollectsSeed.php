@@ -30,7 +30,8 @@ class CollectsSeed extends AbstractSeed
                 'city' => '渋谷区' ,
                 'limit' => 2,
                 'time' => '2021/07/23',
-                'content' => '詳細'
+                'content' => '詳細',
+                'title' => "渋谷募集します"
             ],
             [
                 'user_id' => 1,
@@ -41,7 +42,8 @@ class CollectsSeed extends AbstractSeed
                 'city' => '江東区' ,
                 'limit' => 2,
                 'time' => '2021/07/24',
-                'content' => '詳細'
+                'content' => '詳細',
+                'title' => "江東区募集します"
             ],
             [
                 'user_id' => 1,
@@ -52,7 +54,8 @@ class CollectsSeed extends AbstractSeed
                 'city' => '台東区' ,
                 'limit' => 2,
                 'time' => '2021/07/24',
-                'content' => '詳細'
+                'content' => '詳細',
+                'title' => "台東区募集します"
             ],
             [
                 'user_id' => 2,
@@ -63,7 +66,8 @@ class CollectsSeed extends AbstractSeed
                 'city' => '川崎市' ,
                 'limit' => 2,
                 'time' => '2021/07/23',
-                'content' => '詳細'
+                'content' => '詳細',
+                'title' => "川崎募集します"
             ],
             [
                 'user_id' => 2,
@@ -74,7 +78,8 @@ class CollectsSeed extends AbstractSeed
                 'city' => '都筑区' ,
                 'limit' => 2,
                 'time' => '2021/07/25',
-                'content' => '詳細'
+                'content' => '詳細',
+                'title' => "都筑区募集します"
             ],
             [
                 'user_id' => 2,
@@ -85,7 +90,8 @@ class CollectsSeed extends AbstractSeed
                 'city' => '新宿区' ,
                 'limit' => 2,
                 'time' => '2021/07/25',
-                'content' => '詳細'
+                'content' => '詳細',
+                'title' => "新宿募集します"
             ],
 
         ];
