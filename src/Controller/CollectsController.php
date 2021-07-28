@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
-
+// use Cake\Core\Configure;
 /**
  * Collects Controller
  *
@@ -15,18 +15,35 @@ class CollectsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        $this->Authentication->addUnauthenticatedActions(['index','view']);
+        
+    }
     public function index()
     {
         $this->paginate = ['contain' => ['Users', 'Gyms', 'Parts', 'Purposes', 'Prefectures']];
         if ($this->request->getQuery('filter')) {
             // where文のデータを取得（空も含む）
             $getQuery = [];
-            $getQuery["Collects.time"] = $this->request->getQuery("date");
-            $getQuery["Gyms.id"] = $this->request->getQuery("gym_id");
-            $getQuery["Purposes.id"] = $this->request->getQuery("purpose_id");
-            $getQuery["Prefectures.id"]= $this->request->getQuery("prefecture_id");
-            $getQuery["Parts.id"] = $this->request->getQuery("part_id");
-            $city = $this->request->getQuery("city");
+            $session_array = [];
+            $session_array['date'] = $getQuery["Collects.time"] = $this->request->getQuery("date");
+            $session_array['gym'] = $getQuery["Gyms.id"] = $this->request->getQuery("gym_id");
+            $session_array['purpose'] = $getQuery["Purposes.id"] = $this->request->getQuery("purpose_id");
+            $session_array['prefecture'] = $getQuery["Prefectures.id"]= $this->request->getQuery("prefecture_id");
+            $session_array['part'] = $getQuery["Parts.id"] = $this->request->getQuery("part_id");
+            $session_array['city'] = $this->request->getQuery("city");
+            $getQuery["Collects.city LIKE"] = "%".$session_array['city']."%";
+
+            // セッションの格納
+            foreach($session_array as $key => $val){
+                if(!empty($val)){
+                    $this->session->write($key,$val);
+                }elseif($this->session->check($key)){
+                    $this->session->delete($key);
+                }
+            }
 
             // 検索されたデータのみ形成しwhere実行
             $filter=[];
@@ -37,11 +54,6 @@ class CollectsController extends AppController
             }
             $query = $this->Collects->find();
             $query->where([$filter]);
-
-            // cityが記入されていれば検索
-            if(!empty($city)) {
-                $query->where(["Collects.city LIKE"=>'%'.$city.'%']);
-            }
 
             // クエリ実行
             $collects = $this->paginate($query);

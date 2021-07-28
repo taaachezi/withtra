@@ -433,5 +433,9 @@ return [
      */
     'Session' => [
         'defaults' => 'php',
+        'timeout' => 60,
+        'ini' => [
+            'session.cookie_path' => '/'
+        ]
     ],
 ];

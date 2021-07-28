@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
 
 /**
  * Application Controller
@@ -37,7 +38,8 @@ class AppController extends Controller
      *
      * @return void
      */
-    // ログイン判定
+
+    // ログイン判定 全てのコントローラで最初に走らせる
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         $result = $this->Authentication->getResult();
@@ -48,12 +50,14 @@ class AppController extends Controller
             $is_login = false;
             $current_user = "";
         }
-        $this->set(compact('is_login','current_user'));
+        $session = $this->session = $this->getRequest()->getSession();
+
+        $this->set(compact('is_login','current_user','session'));
+        
     }
     public function initialize(): void
     {
         parent::initialize();
-
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent('Authentication.Authentication');

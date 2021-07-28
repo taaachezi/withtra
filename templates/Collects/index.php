@@ -1,4 +1,4 @@
-<?php
+<?php 
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Collect[]|\Cake\Collection\CollectionInterface $collects
@@ -14,16 +14,16 @@ echo $this->Html->script('collect/index');
             <?= $this->Form->create(null, ['type' => 'get', 'url' =>['action' => 'index','controller' => 'Collects']]) ?>
             <?= $this->Form->hidden("filter",["value"=>"filter"]); ?>
             <dt class="border-start border-primary border-5 ps-3">日程選択</dt>
-            <input type="date" name="date" id="today">
+            <input type="date" name="date" id="today" value="<?= $session->read('date') ?? ''; ?>" >
             <dt class="border-start border-primary border-5 ps-3">ジム選択</dt>
-            <?= $this->Form->control('gym_id',["label" => false,"empty"=>"ジムを選択"]);?>
+            <?= $this->Form->control('gym_id',["label" => false,"empty"=>"ジムを選択","value"=> $session->read('gym') ?? '']);?>
             <dt class="border-start border-primary border-5 ps-3">目的選択</dt>
-            <?= $this->Form->control("purpose_id",["label" => false,"empty"=>"目的を選択"]); ?>
+            <?= $this->Form->control("purpose_id",["label" => false,"empty"=>"目的を選択","value"=> $session->read('purpose') ?? '']); ?>
             <dt class="border-start border-primary border-5 ps-3">住所選択</dt>
-            <?= $this->Form->control("prefecture_id",["label" => false,"empty"=>"住所を選択"]); ?>
-            <input type="text" name="city" placeholder="店名または施設名">
+            <?= $this->Form->control("prefecture_id",["label" => false,"empty"=>"住所を選択","value"=> $session->read('prefecture') ?? '']); ?>
+            <input type="text" name="city" placeholder="店名または施設名"  value="<?= $session->read('city') ?? ''; ?>">
             <dt class="border-start border-primary border-5 ps-3">トレーニング部位選択</dt>
-            <?= $this->Form->control("part_id",["label" => false,"empty"=>"部位を選択"]); ?>
+            <?= $this->Form->control("part_id",["label" => false,"empty"=>"部位を選択","value"=> $session->read('part') ?? '']); ?>
             <?= $this->Form->submit(__("絞り込み")); ?>
             <?= $this->Form->end();?>
         </dl>
@@ -36,17 +36,17 @@ echo $this->Html->script('collect/index');
             <div class="collect_content position-relative border-bottom border-2 my-3">
                 <div class="content_prefecture position-absolute"><span class="badge bg-info"><?= $collect->prefecture->name ?></span></div>
                 <div class="offset-1 col-7">
-                    <h4 class="fw-bold pt-5"><?= $this->Html->link($collect->title,['action'=> 'view',$collect->id]); ?> </h4>
-                    <span class="badge bg-secondary fs-4 m-2">ジム</span><span class="fw-bold"><?= $collect->has('gym') ? $collect->gym->name : '' ?></span>
+                    <h4 class="fw-bold pt-5"><?= $this->Html->link(h($collect->title),['action'=> 'view',$collect->id]); ?> </h4>
+                    <span class="badge bg-secondary fs-4 m-2">ジム</span><span class="fw-bold"><?= $collect->has('gym') ? h($collect->gym->name) : '' ?></span>
                     <p><span class="badge bg-secondary fs-4 m-2">時間</span><span class="fw-bold"><?= h(Date('n月j日　g：i',strtotime($collect->time))) ?></span></p>
                     <p>
-                        <span class="badge bg-primary">部位：<?= $collect->part->name ?></span>
-                        <span class="badge bg-warning">目的：<?= $collect->purpose->content ?></span>
-                        <span class="badge bg-success">人数：<?= $collect->limit ?></span>
+                        <span class="badge bg-primary">部位：<?= h($collect->part->name) ?></span>
+                        <span class="badge bg-warning">目的：<?= h($collect->purpose->content) ?></span>
+                        <span class="badge bg-success">人数：<?= h($collect->limit) ?></span>
                     </p>
-                    <div><?= $collect->content ?></div>
+                    <div><?= h($collect->content) ?></div>
                 </div>
-                <div class="offset-11"><?= $this->Html->link($collect->user->name,['controller' => 'Users', 'action' => 'view']) ?></div>
+                <div class="offset-11"><?= $this->Html->link( h($collect->user->name),['controller' => 'Users', 'action' => 'view']) ?></div>
             </div>
             <?php endforeach ?>
         <?php endif ?>

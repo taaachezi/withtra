@@ -11,10 +11,13 @@ namespace App\Controller;
  */
 class UsersController extends AppController
 {
-    // ログイン認証不要アクションの設定
+    
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
+        // Appcontrollerでのログイン判定
         parent::beforeFilter($event);
+
+        // ログイン認証不要アクションの設定
         $this->Authentication->addUnauthenticatedActions(['login','home', 'add','logout']);
     }
 
@@ -39,6 +42,7 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
         if($result->isValid()){
             $this->Authentication->logout();
+            $this->session->destroy();
             return $this->redirect(['controller' => 'Users', 'action' => 'home']);
         }
         return $this->redirect(['controller' => 'Users', 'action' => 'home']);
